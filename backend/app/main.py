@@ -23,6 +23,9 @@ async def lifespan(app: FastAPI):
     # на старте пробуем поднять коллекцию в Qdrant и BM25-кэш из Postgres.
     # Если базы ещё не готовы (например, только что поднялись в docker-compose) —
     # не роняем приложение, просто логируем: /upload_excel всё равно всё пересоздаст
+    from app.config import settings
+    print(f"[DEBUG] Ollama URL: {settings.ollama_url}")
+
     try:
         qdrant_db.ensure_collection()
         build_index()
