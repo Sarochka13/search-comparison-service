@@ -29,7 +29,7 @@ def generate_answer(prompt: str) -> str:
     resp = httpx.post(
         f"{settings.ollama_url}/api/generate",
         json={"model": settings.llm_model, "prompt": prompt, "stream": False},
-        timeout=120.0,
+        timeout=300.0,
     )
     resp.raise_for_status()
     return resp.json()["response"]
