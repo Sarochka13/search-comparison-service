@@ -1,4 +1,64 @@
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pythonenv*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+*.log
+*.pid
+*.pid.lock
+*.tmp
+logs/
+*.db
+*.sqlite
+
+# Environment
 .env
-*.xlsx
+.env.local
+.env.*.local
+
+# Data files
+*.xls
+*.csv
+!sample_*.xlsx
+data/
+temp/
+*.tmp
+
+# Backend
+backend/__pycache__/
+backend/*.log
+
+# Qdrant data
+qdrant_data/
+postgres_data/
+ollama_data/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Reports
+*.html
+*.xml
+*.coverage
+
+# OS
+Thumbs.db
+Desktop.ini
