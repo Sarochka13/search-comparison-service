@@ -8,7 +8,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 
 from app.models import SearchRequest, SearchResponse, UploadResponse
 from app.utils.excel_parser import parse_excel
-from app.database.postgres import insert_products
+from app.database.postgres import insert_products, init_db
 from app.database import qdrant as qdrant_db
 from app.llm.ollama_client import embed_text
 from app.search.semantic import build_index
@@ -20,13 +20,11 @@ logger = logging.getLogger("main")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # на старте пробуем поднять коллекцию в Qdrant и BM25-кэш из Postgres.
-    # Если базы ещё не готовы (например, только что поднялись в docker-compose) —
-    # не роняем приложение, просто логируем: /upload_excel всё равно всё пересоздаст
-    from app.config import settings
-    print(f"[DEBUG] Ollama URL: {settings.ollama_url}")
-
+    # на старте: создаём таблицу (если её ещё нет), поднимаем коллекцию в Qdrant
+    # и BM25-кэш из Postgres. Если базы ещё не готовы — не роняем приложение,
+    # просто логируем: /upload_excel всё равно всё пересоздаст
     try:
+        init_db()
         qdrant_db.ensure_collection()
         build_index()
     except Exception as e:
@@ -72,3 +70,4 @@ def search(req: SearchRequest):
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
